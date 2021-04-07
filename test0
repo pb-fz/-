@@ -1,0 +1,37 @@
+Linux中第一个字符代表这个文件是目录、文件或链接文件等等。
+当为[ d ]则是目录
+当为[ - ]则是文件；
+若是[ l ]则表示为链接文档(link file)；
+若是[ b ]则表示为装置文件里面的可供储存的接口设备(可随机存取装置)；
+若是[ c ]则表示为装置文件里面的串行端口设备，例如键盘、鼠标(一次性读取装置)。
+接下来的字符中，以三个为一组，且均为『rwx』 的三个参数的组合
+
+curl http://metadata.tencentyun.com/latest/meta-data/public-ipv4            curl ip.cip.cc
+/etc/resolv.conf             # DNS配置文件
+/etc/hosts                      #主机名到IP地址的映射 ,不该主机名基本不会动他。
+/etc/sysconfig/network           #所有的网络接口和路由信息，网关只有最后一个有效。
+/etc/sysconfig/network-script/ifcfg-<interface-name>      #每一个网络接口的配置信息
+route -n                      #查看网关
+route add -net 10.0.1.0/24 gw 10.0.0.11  #添加路由； 利用添加网络路由条目命令，在服务器上正确添加上一条去往10.0.1.0 网段的路由条目
+/etc/sysctl.conf              #路由转发设置
+sysctl -p                     #显示转发信息
+# 启动docker服务
+sudo systemctl start docker
+# 设置开机自动启动
+sudo systemctl enable docker
+docker run -d nginx
+docker ps
+docker exec -it afbec7c2ed2f /bin/bash
+sudo apt-get update
+sudo apt-get install docker
+sudo apt-get install vim
+
+dump抓包：tcpdump tcp -i eth1 -t -s 0 -c 100 and dst port ! 22 and src net 192.168.1.0/24 -w ./target.cap
+(1)tcp: ip icmp arp rarp 和 tcp、udp、icmp这些选项等都要放到第一个参数的位置，用来过滤数据报的类型
+(2)-i eth1 : 只抓经过接口eth1的包
+(3)-t : 不显示时间戳
+(4)-s 0 : 抓取数据包时默认抓取长度为68字节。加上-S 0 后可以抓到完整的数据包
+(5)-c 100 : 只抓取100个数据包
+(6)dst port ! 22 : 不抓取目标端口是22的数据包
+(7)src net 192.168.1.0/24 : 数据包的源网络地址为192.168.1.0/24
+(8)-w ./target.cap : 保存成cap文件，方便用ethereal(即wireshark)分析
